@@ -24,6 +24,14 @@ class sentimentLearner():
             labeldatum = LabeledDatum(label, datum)
             self.model.train([labeldatum])
 
+            all_emoticons = self.happy_emoticons + self.sad_emoticons
+            for emoticon in all_emoticons:
+                tweet = tweet.replace(emoticon, "")
+            
+            datum = Datum({"tweet": tweet})
+            labeldatum = LabeledDatum(label, datum)
+            self.model.train([labeldatum])
+
             print self.model.save("sentimentModel")
             return True
         return False

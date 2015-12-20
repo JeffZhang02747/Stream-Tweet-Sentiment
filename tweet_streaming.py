@@ -34,7 +34,7 @@ class MyStreamListener(tweepy.StreamListener):
     def on_status(self, status):
         tweet = status.text
         print (tweet)
-        # print self.learner.trainTweet(tweet)
+        print self.learner.trainTweet(tweet)
 
 
 if __name__ == '__main__':
