@@ -18,6 +18,8 @@ port = 9199
 name = 'sentimentModel'
 
 
+
+
 happy_emoticons = emoji_filter(100, True, 0.49)
 sad_emoticons = emoji_filter(100, False, -0.1)
 
@@ -33,14 +35,13 @@ class MyStreamListener(tweepy.StreamListener):
 
     def on_status(self, status):
         tweet = status.text
-        print (tweet)
         print self.learner.trainTweet(tweet)
 
 
 if __name__ == '__main__':
 
     client = Classifier(host, port, name)
-    # client.load(name)
+    client.load(name)
     learner = sentimentLearner(client, happy_emoticons, sad_emoticons)
 
     #This handles Twitter authetification and the connection to Twitter Streaming API
@@ -50,7 +51,10 @@ if __name__ == '__main__':
     myStreamListener = MyStreamListener(learner)
     myStream = tweepy.Stream(auth = auth, listener=myStreamListener)
 
-
-    #This line filter Twitter Streams to capture data by the keywords: 'python', 'javascript', 'ruby'
-    myStream.filter(track= emoticon_list,  languages = ["en"])
+    while True:
+        try:
+        #This line filter Twitter Streams to capture data by the keywords: 'python', 'javascript', 'ruby'
+            myStream.filter(track= emoticon_list,  languages = ["en"])
+        except ProtocolError:
+            continue
 

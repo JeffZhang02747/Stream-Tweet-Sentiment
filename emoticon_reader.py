@@ -28,5 +28,5 @@ def emoji_filter(least_number, greater_than, score):
     return filter_list
 
 
-emoji_filter(100, True, 0.49)
-emoji_filter(100, False, -0.1)
+# emoji_filter(100, True, 0.49)
+# emoji_filter(100, False, -0.1)
