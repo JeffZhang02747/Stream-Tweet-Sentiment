@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 import tweepy
-from emoticon_reader import emoji_filter
+from emoji_data.emoticon_reader import emoji_filter
 
 from learner import sentimentLearner
 from jubatus.classifier.client import Classifier
+
+from requests.packages.urllib3.exceptions import ProtocolError
+
 
 #Variables that contains the user credentials to access Twitter API 
 access_token = "2209821403-BWDoRCLfPajwINfEN0IwWkWLjGGaLvCcsutiM0U"
@@ -16,8 +19,6 @@ consumer_secret = "DdMR9irroK8h3bMsekswA0JjGYV94EVp3CDsuUsLTRW3Sm6CTY"
 host = '127.0.0.1'
 port = 9199
 name = 'sentimentModel'
-
-
 
 
 happy_emoticons = emoji_filter(100, True, 0.49)
@@ -41,7 +42,7 @@ class MyStreamListener(tweepy.StreamListener):
 if __name__ == '__main__':
 
     client = Classifier(host, port, name)
-    client.load(name)
+    # client.load(name)
     learner = sentimentLearner(client, happy_emoticons, sad_emoticons)
 
     #This handles Twitter authetification and the connection to Twitter Streaming API

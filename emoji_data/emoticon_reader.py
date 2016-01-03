@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import csv
-import pkg_resources
+import os
 
 # emoji  ->decode to utf-8 code
 # utf-8 code ->encode to emoji
@@ -9,10 +9,11 @@ import pkg_resources
 #read the file Emoji_Sentiment_Data_v1.0.csv and output the list of emoji with sentiment_score meet the threshold
 def emoji_filter(least_number, greater_than, score):
     filter_list = []
+    print __file__
+    dir = os.path.dirname(__file__)
+    filename = os.path.join(dir, 'Emoji_Sentiment_Data_v1.0.csv')
 
-    print "aaa"
-    print pkg_resources.resource_string(__name__, 'Emoji_Sentiment_Data_v1.0.csv')
-    with pkg_resources.resource_string(__name__, 'Emoji_Sentiment_Data_v1.0.csv') as csvfile:
+    with open(filename) as csvfile:
         dict_read = csv.DictReader(csvfile)
         for row in dict_read:
             total_occurs = int(row["Occurrences"])

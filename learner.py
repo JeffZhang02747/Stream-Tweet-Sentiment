@@ -5,12 +5,15 @@ from jubatus.classifier.client import Classifier
 from jubatus.classifier.types import LabeledDatum
 from jubatus.common import Datum
 
-import CMUTweetTagger
+from tagger import CMUTweetTagger
+
 from nltk.corpus import stopwords
 from nltk.stem.porter import *
 
 filter_tags = ['N', '^', 'V', 'A', 'R', '!', '#', 'E']
 not_stem_tags = ['^', '!', '#', 'E']
+
+# negation_cues = ["not", "never", ""]
 
 class sentimentLearner():
     def __init__(self, model, happy_emoticons, sad_emoticons):
@@ -49,15 +52,6 @@ class sentimentLearner():
 
     #label the tweet based on emoticon
     def label(self, tweet):
-
-        # if ":)" in tweet and ":(" in tweet:
-        #   return ""
-        # elif ":)" in tweet:
-        #   return "happy"
-        # elif ":(" in tweet:
-        #   return "sad"
-        # return ""
-
         if any(emoticon in tweet for emoticon in self.happy_emoticons) and any(emoticon in tweet for emoticon in self.sad_emoticons):
             return ""
         elif any(emoticon in tweet for emoticon in self.happy_emoticons):
@@ -67,11 +61,14 @@ class sentimentLearner():
         return ""
 
     def processTweet(self, tweet):
+        #tag the text
         analyse = CMUTweetTagger.runtagger_parse([tweet])
         analyse = analyse[0]
 
+        #only return these match the tag and not the stop words
         filtered = filter(lambda x: (x[1] in filter_tags or x[0] in self.all_emoticons) and (x[0] not in self.stop), analyse)
 
+        #do not stem the emoticon
         words = []
         for word in filtered:
             if (word[1] in not_stem_tags or word[0] in self.all_emoticons):
