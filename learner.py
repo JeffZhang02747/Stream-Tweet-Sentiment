@@ -50,6 +50,8 @@ class sentimentLearner():
             labeldatum = LabeledDatum(label, datum)
             self.model.train([labeldatum])
 
+            #save the model
+            self.model.save("sentimentModel")
             return True
         return False
 
@@ -97,7 +99,7 @@ class sentimentLearner():
                     # words.append(word[0])
                     continue
 
-            if (word not in self.all_emoticons) and (word.lower() in negation_cues):
+            if (word.lower() in negation_cues) or word.lower().endswith("n't"):
                 negation = not negation
 
         return  " ".join(words).decode('utf-8')
