@@ -15,7 +15,7 @@ consumer_key = "NWYG4K5rjtHSZL7qHLlPDxG9m"
 consumer_secret = "DdMR9irroK8h3bMsekswA0JjGYV94EVp3CDsuUsLTRW3Sm6CTY"
 
 
-#JUbatus
+#Jubatus
 host = '127.0.0.1'
 port = 9199
 name = 'sentimentModel'
@@ -36,7 +36,7 @@ class MyStreamListener(tweepy.StreamListener):
 
     def on_status(self, status):
         tweet = status.text
-        print self.learner.trainTweet(tweet)
+        self.learner.trainTweet(tweet)
 
 
 if __name__ == '__main__':

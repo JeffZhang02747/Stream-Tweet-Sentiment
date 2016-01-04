@@ -9,11 +9,14 @@ from tagger import CMUTweetTagger
 
 from nltk.corpus import stopwords
 from nltk.stem.porter import *
+from neg_word.negation_cue import get_negation_cue
 
 filter_tags = ['N', '^', 'V', 'A', 'R', '!', '#', 'E']
 not_stem_tags = ['^', '!', '#', 'E']
 
-# negation_cues = ["not", "never", ""]
+negation_cues = get_negation_cue()
+
+
 
 class sentimentLearner():
     def __init__(self, model, happy_emoticons, sad_emoticons):
@@ -34,6 +37,7 @@ class sentimentLearner():
         if label:
             tweet = self.processTweet(tweet)
             print tweet
+
             datum = Datum({"tweet": tweet})
             labeldatum = LabeledDatum(label, datum)
             self.model.train([labeldatum])
@@ -46,7 +50,6 @@ class sentimentLearner():
             labeldatum = LabeledDatum(label, datum)
             self.model.train([labeldatum])
 
-            print self.model.save("sentimentModel")
             return True
         return False
 
@@ -70,16 +73,32 @@ class sentimentLearner():
 
         #do not stem the emoticon
         words = []
-        for word in filtered:
-            if (word[1] in not_stem_tags or word[0] in self.all_emoticons):
-                words.append(word[0])
+        negation = False
+
+        # print filtered
+        for word_tag in filtered:
+            tag = word_tag[1]
+            word = word_tag[0]
+
+            if (tag in not_stem_tags or word in self.all_emoticons):
+                append_word = word
+                if (tag != 'E') and (word not in self.all_emoticons) and negation:
+                    append_word = 'neg_' + append_word
+                words.append(word)
+
             else:
                 #for all sorts of reason... might not able to stem the word...
                 try:
-                    words.append( self.stemmer.stem(word[0].lower()).encode("utf-8") )
+                    append_word = self.stemmer.stem(word.lower())
+                    if negation:
+                        append_word = 'neg_' + append_word
+                    words.append( append_word.encode("utf-8") )
                 except:
                     # words.append(word[0])
                     continue
+
+            if (word not in self.all_emoticons) and (word.lower() in negation_cues):
+                negation = not negation
 
         return  " ".join(words).decode('utf-8')
 

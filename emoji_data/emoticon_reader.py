@@ -9,7 +9,6 @@ import os
 #read the file Emoji_Sentiment_Data_v1.0.csv and output the list of emoji with sentiment_score meet the threshold
 def emoji_filter(least_number, greater_than, score):
     filter_list = []
-    print __file__
     dir = os.path.dirname(__file__)
     filename = os.path.join(dir, 'Emoji_Sentiment_Data_v1.0.csv')
 

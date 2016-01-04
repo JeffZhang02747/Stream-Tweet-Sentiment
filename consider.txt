@@ -1,0 +1,13 @@
+need to solve:
+1. way to label streaming( from emoticon , how?)
+2. emoticon have way higher weight( remove emotion and train it again)
+3. "I feel great" & "I don't feel great" (negative word. not_great )
+4. tfidf or just count as 1,0
+
+5. stop word, stem word..( c++ plugin seems not easy to write, preprocess before throw to jubatus)
+
+take out stop word first, then tag it.. want to have ['N', '^', 'V', 'A', 'R', '!',]
+
+
+delta tfidf
+...
