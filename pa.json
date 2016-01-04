@@ -11,7 +11,7 @@
     "num_filter_rules": [],
     "string_types": {},
     "string_rules": [
-      { "key": "tweet-detagged", "type": "space", "sample_weight": "bin", "global_weight": "bin"}
+      { "key": "tweet-detagged", "type": "space", "sample_weight": "bin", "global_weight": "idf"}
     ],
     "num_types": {},
     "num_rules": []
